@@ -1,0 +1,107 @@
+﻿@page
+@using System.Web
+@using Microsoft.AspNetCore.Http.Extensions
+@model IEnumerable<SGSTestTask.Models.Cur>
+@{
+    Layout = "_Layout";
+    var pageNumber = (int)ViewBag.pageNumber;
+    var dataList = (List<Cur>)ViewBag.list;
+}
+
+<div>
+    <h1>Базы данных</h1>
+    <br>
+</div>
+<div>
+    <table class="table table-bordered table-striped" style="width: 100%">
+        <thead style="vertical-align: baseline">
+        <tr>
+            <th style="font-size: large">
+                ID
+            </th>
+            <th>
+                Name
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            int maxBound = 0;
+            if (pageNumber == Math.Ceiling(dataList.Count() / 10.0))
+            {
+                maxBound = dataList.Count();
+            }
+            else
+            {
+                maxBound = pageNumber * 10;
+            }
+        }
+        @for (int i = (pageNumber - 1) * 10; i < maxBound; i++)
+                {
+                    var currency = dataList.ElementAt(i);
+                    <tr>
+                        <td>@currency.ID</td>
+                        <td>
+                            <a href="~/Currency/KeyWord?id=@currency.ID">@currency.Name</a>
+                        </td>
+                    </tr>
+                }
+        </tbody>
+    </table>
+</div>
+<nav>
+    @{
+        string url = (ViewBag.path).ToString();
+        if (url.Contains("pgn"))
+        {
+            url = url.Substring(0, url.IndexOf("pgn") - 1);
+        }
+        string connector = "?";
+        url += connector;
+    }
+    <ul class="pagination">
+        @if (pageNumber == 1)
+        {
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+            </li>
+        }
+        else
+        {
+            int prevPage = pageNumber - 1;
+            <li class="page-item">
+                <a class="page-link" href="@(url)pgn=@prevPage">Previous</a>
+            </li>
+        }
+        @for (int i = 0; i < Math.Ceiling(dataList.Count() / 10.0); i++)
+        {
+            int j = i + 1;
+            if (j == pageNumber)
+            {
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="@(url)pgn=@pageNumber">@j</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@(url)pgn=@j">@j</a>
+                </li>
+            }
+        }
+        @if (pageNumber == (int)Math.Ceiling(dataList.Count() / 10.0))
+        {
+            int nextPage = pageNumber + 1;
+            <li class="page-item disabled">
+                <a class="page-link">Next</a>
+            </li>
+        }
+        else
+        {
+            int nextPage = pageNumber + 1;
+            <li class="page-item">
+                <a class="page-link" href="@(url)pgn=@nextPage">Next</a>
+            </li>
+        }
+    </ul>
+</nav>
