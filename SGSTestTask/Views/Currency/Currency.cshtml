@@ -1,19 +1,24 @@
-﻿@page
-@model SGSTestTask.Views.Currency.Currency
+﻿@model SGSTestTask.Models.Cur
 
 @{
-    Layout = null;
+    Layout = "_Layout";
 }
 
-<!DOCTYPE html>
+<h2>@Model.Name</h2>
+<h4>Информация:</h4>
+<table class="table table-bordered table-striped" style="width: 100%">
+    <tbody>
+    @foreach (var prop in Model.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
+    {
+        <tr>
+            <td>
+                @prop.Name
+            </td>
+            <td>
+                @prop.GetValue(Model,null)
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
 
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<div>
-    
-</div>
-</body>
-</html>

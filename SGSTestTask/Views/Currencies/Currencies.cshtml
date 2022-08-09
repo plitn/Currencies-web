@@ -1,15 +1,11 @@
-﻿@page
-@using System.Web
-@using Microsoft.AspNetCore.Http.Extensions
-@model IEnumerable<SGSTestTask.Models.Cur>
+﻿@model List<SGSTestTask.Models.Cur>
 @{
     Layout = "_Layout";
     var pageNumber = (int)ViewBag.pageNumber;
-    var dataList = (List<Cur>)ViewBag.list;
 }
 
 <div>
-    <h1>Базы данных</h1>
+    <h1>Валюты</h1>
     <br>
 </div>
 <div>
@@ -27,9 +23,9 @@
         <tbody>
         @{
             int maxBound = 0;
-            if (pageNumber == Math.Ceiling(dataList.Count() / 10.0))
+            if (pageNumber == Math.Ceiling(Model.Count() / 10.0))
             {
-                maxBound = dataList.Count();
+                maxBound = Model.Count();
             }
             else
             {
@@ -38,11 +34,11 @@
         }
         @for (int i = (pageNumber - 1) * 10; i < maxBound; i++)
                 {
-                    var currency = dataList.ElementAt(i);
+                    var currency = Model.ElementAt(i);
                     <tr>
                         <td>@currency.ID</td>
                         <td>
-                            <a href="~/Currency/KeyWord?id=@currency.ID">@currency.Name</a>
+                            <a href="~/Currency/Currency?id=@currency.ID">@currency.Name</a>
                         </td>
                     </tr>
                 }
@@ -73,7 +69,7 @@
                 <a class="page-link" href="@(url)pgn=@prevPage">Previous</a>
             </li>
         }
-        @for (int i = 0; i < Math.Ceiling(dataList.Count() / 10.0); i++)
+        @for (int i = 0; i < Math.Ceiling(Model.Count() / 10.0); i++)
         {
             int j = i + 1;
             if (j == pageNumber)
@@ -89,7 +85,7 @@
                 </li>
             }
         }
-        @if (pageNumber == (int)Math.Ceiling(dataList.Count() / 10.0))
+        @if (pageNumber == (int)Math.Ceiling(Model.Count() / 10.0))
         {
             int nextPage = pageNumber + 1;
             <li class="page-item disabled">

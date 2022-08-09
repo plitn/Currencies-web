@@ -1,6 +1,6 @@
 ﻿namespace SGSTestTask.Models;
 
-public class Valute
+public class Cur
 {
     public string? ID { get; set; }
     public string? NumCode { get; set; }
